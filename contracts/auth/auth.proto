@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "github.com/humanbelnik/backy-contracts/auth;auth_v1";
+
+service Auth {
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+    rpc UnRegister (UnregisterRequest) returns (UnregisterResponse);
+    rpc Login (LoginRequest) returns (LoginResponse);
+    rpc Logout (LogoutRequest) returns (LogoutResponse);
+    rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+}
+
+
+// Register.
+message RegisterRequest {
+    string email = 1;
+    string nickname = 2;
+    string password = 3;
+}
+
+message RegisterResponse {
+    int64 user_id = 1;
+}
+
+
+// Unregister
+message UnregisterRequest {
+    string unregister_string = 1;     // Can be either Email or Login.   
+    string password = 2;
+    string password_confirmed = 3;
+}
+
+message UnregisterResponse {
+    int64 user_id = 1;
+}
+
+
+// Login.
+message LoginRequest {     
+    string login_string = 1;          // Can be either Email or Login.    
+    string password = 2;
+}
+
+message LoginResponse {
+    string token = 1;                 // JWT token.
+}
+
+
+// Logout.
+message LogoutRequest {
+    string token = 1;                 // Logout from current session by specifying JWT token given in login. 
+}
+
+message LogoutResponse {
+    bool ok = 1;
+}
+
+
+// IsAdmin.
+message IsAdminRequest {
+    int64 user_id = 1;
+}
+
+message IsAdminResponse {
+    bool is_admin = 1;
+}
